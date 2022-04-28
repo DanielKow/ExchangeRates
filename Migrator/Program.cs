@@ -1,4 +1,4 @@
-using ExchangeRatesSource.InfrastructureLayer;
+using ExchangeRatesSource.InfrastructureLayer.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

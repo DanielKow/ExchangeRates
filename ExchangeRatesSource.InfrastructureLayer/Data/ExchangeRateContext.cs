@@ -1,7 +1,7 @@
 using ExchangeRatesSource.DomainLayer;
 using Microsoft.EntityFrameworkCore;
 
-namespace ExchangeRatesSource.InfrastructureLayer;
+namespace ExchangeRatesSource.InfrastructureLayer.Data;
 
 public class ExchangeRateContext : DbContext
 {
