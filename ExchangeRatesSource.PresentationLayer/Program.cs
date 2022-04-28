@@ -1,8 +1,15 @@
+using ExchangeRatesSource.ApplicationLayer;
+using ExchangeRatesSource.InfrastructureLayer.Nbp;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 
 var builder = WebApplication.CreateBuilder(args);
+ConfigurationManager configuration = builder.Configuration;
 
+builder.Services.AddHttpClient<IExchangeRatesSource, NbpExchangeRatesSource>(client =>
+{
+    client.BaseAddress = new Uri(configuration["NbpUrl"]);
+});
 
 builder.Services.AddControllers()
     .AddXmlSerializerFormatters();
