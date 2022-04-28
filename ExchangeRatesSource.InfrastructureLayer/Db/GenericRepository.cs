@@ -1,7 +1,7 @@
 using ExchangeRatesSource.ApplicationLayer;
 using Microsoft.EntityFrameworkCore;
 
-namespace ExchangeRatesSource.InfrastructureLayer.Data;
+namespace ExchangeRatesSource.InfrastructureLayer.Db;
 
 public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
 {

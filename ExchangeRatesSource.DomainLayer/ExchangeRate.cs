@@ -3,9 +3,9 @@ namespace ExchangeRatesSource.DomainLayer;
 public readonly struct ExchangeRate
 {
     public string Currency { get; }
-    public string Value { get; }
+    public decimal Value { get; }
 
-    public ExchangeRate(string currency, string value)
+    public ExchangeRate(string currency, decimal value)
     {
         Currency = currency;
         Value = value;

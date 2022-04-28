@@ -1,7 +1,7 @@
 using ExchangeRatesSource.ApplicationLayer;
 using ExchangeRatesSource.DomainLayer;
 
-namespace ExchangeRatesSource.InfrastructureLayer.Data;
+namespace ExchangeRatesSource.InfrastructureLayer.Db;
 
 public class ExchangeRatesUnitOfWork : IExchangeRatesUnitOfWork
 {

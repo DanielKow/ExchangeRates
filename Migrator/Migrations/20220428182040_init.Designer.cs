@@ -5,7 +5,7 @@
 
 using System;
 using ExchangeRatesSource.InfrastructureLayer;
-using ExchangeRatesSource.InfrastructureLayer.Data;
+using ExchangeRatesSource.InfrastructureLayer.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
