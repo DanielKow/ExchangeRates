@@ -1,0 +1,40 @@
+version: '3.4'
+services:
+  webapi:
+    image: exchange.rates.webapi
+    build:
+      context: .
+      dockerfile: WebApi.PresentationLayer/Dockerfile
+    ports:
+      - "8000:80"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    depends_on:
+      - source
+  source:
+    image: exchange.rates.source
+    build:
+      context: .
+      dockerfile: ExchangeRatesSource.PresentationLayer/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Db: User ID=root; Password=root; Host=db; Port=5432; Database=postgres;
+    depends_on:
+      - db
+      - migrator
+  migrator:
+    image: insert.task.migrator
+    build:
+      context: .
+      dockerfile: Migrator/Dockerfile
+    depends_on:
+      - db
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    ports:
+      - "8001:5432"
+
+    
