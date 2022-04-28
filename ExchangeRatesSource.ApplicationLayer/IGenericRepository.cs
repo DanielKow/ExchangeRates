@@ -6,4 +6,5 @@ public interface IGenericRepository<TEntity> where TEntity : class
     Task InsertAsync(TEntity toAdd);
     Task UpsertAsync(TEntity toUpsert);
     Task UpsertManyAsync(IEnumerable<TEntity> toUpsertList);
+    void Update(TEntity toUpdate);
 }
