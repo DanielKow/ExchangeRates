@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace ExchangeRatesSource.DomainLayer;
 
 public readonly struct ExchangeRate
@@ -5,6 +7,7 @@ public readonly struct ExchangeRate
     public string Currency { get; }
     public decimal Value { get; }
 
+    [JsonConstructor]
     public ExchangeRate(string currency, decimal value)
     {
         Currency = currency;
