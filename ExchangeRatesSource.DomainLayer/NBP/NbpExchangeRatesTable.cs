@@ -5,7 +5,7 @@ namespace ExchangeRatesSource.DomainLayer.NBP;
 public class NbpExchangeRatesTable
 {
     public NbpExchangeRatesTableType Table { get; }
-    public DateOnly LastUpdateDate { get; }
+    [JsonPropertyName("effectiveDate")] public DateOnly LastUpdateDate { get; }
     public IEnumerable<NbpExchangeRate> Rates { get; }
 
     [JsonConstructor]

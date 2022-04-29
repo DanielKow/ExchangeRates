@@ -5,7 +5,7 @@ namespace ExchangeRatesSource.DomainLayer;
 public class ExchangeRateType
 {
     public string Name { get; init; }
-    [JsonPropertyName("effectiveDate")] public DateOnly LastUpdateDate { get; init; }
+    public DateOnly LastUpdateDate { get; init; }
 
     public override bool Equals(object? obj)
     {
