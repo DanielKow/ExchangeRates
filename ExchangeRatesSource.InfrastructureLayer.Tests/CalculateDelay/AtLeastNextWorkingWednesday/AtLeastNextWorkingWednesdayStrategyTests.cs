@@ -7,18 +7,18 @@ namespace ExchangeRatesSource.InfrastructureLayer.Tests.CalculateDelay.AtLeastNe
 [Category("unit")]
 internal class AtLeastNextWorkingWednesdayStrategyTests : AtLeastNextWorkingWednesdayStrategyTestsCases
 {
-    [TestCaseSource(nameof(DateTimesToAtLeastNextWorkingWednesday))]
-    public void CalculateDelay_should_return_number_of_milliseconds_to_at_least_next_working_wednesday_when_called(DateTime actualTime, DateOnly expectedDate)
+    [TestCaseSource(nameof(ActualDateTimeToAtLeastNextWorkingWednesday))]
+    public void CalculateDelay_should_return_number_of_milliseconds_to_at_least_next_working_wednesday_when_called(DateTime actualDateTime, DateOnly expectedDate)
     {
         // Arrange
-        SetUpActualTime(actualTime);
+        SetUpActualDateTime(actualDateTime);
         var strategy = GetMockedStrategy();
         
         // Act
         var delay = strategy.CalculateDelay();
 
         // Assert
-        var result = actualTime.AddMilliseconds(delay);
+        var result = actualDateTime.AddMilliseconds(delay);
         Assert.That(DateOnly.FromDateTime(result), Is.EqualTo(expectedDate));
     }
 }

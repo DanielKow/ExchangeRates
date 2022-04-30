@@ -31,4 +31,9 @@ public class NextWorkingDayStrategy : ICalculateDelayStrategy
         
         return delay;
     }
+
+    public bool CheckIfActual(DateOnly lastUpdateDate)
+    {
+        throw new NotImplementedException();
+    }
 }

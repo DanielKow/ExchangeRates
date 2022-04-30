@@ -7,7 +7,7 @@ namespace ExchangeRatesSource.InfrastructureLayer.Tests.CalculateDelay.AtLeastNe
 [Category("test_cases")]
 internal class AtLeastNextWorkingWednesdayStrategyTestsCases : AtLeastNextWorkingWednesdayStrategyTestsBase
 {
-    protected static IEnumerable<TestCaseData> DateTimesToAtLeastNextWorkingWednesday => new[]
+    protected static IEnumerable<TestCaseData> ActualDateTimeToAtLeastNextWorkingWednesday => new[]
     {
         new TestCaseData(new DateTime(2022, 4, 30, 12, 33, 2), new DateOnly(2022, 5, 4)),
         new TestCaseData(new DateTime(2022, 1, 1, 0, 0, 1), new DateOnly(2022, 1, 5)),

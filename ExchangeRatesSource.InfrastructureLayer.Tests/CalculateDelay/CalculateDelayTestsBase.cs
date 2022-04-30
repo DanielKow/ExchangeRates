@@ -16,7 +16,7 @@ internal class CalculateDelayTestsBase
         _timeProviderMock = new Mock<ITimeProvider>();
     }
 
-    protected void SetUpActualTime(DateTime time)
+    protected void SetUpActualDateTime(DateTime time)
     {
         _timeProviderMock.Setup(moq => moq.Now).Returns(time);
     }
