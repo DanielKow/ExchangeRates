@@ -23,9 +23,9 @@ internal class NextWorkingDayStrategyTestsCases : NextWorkingDayStrategyTestsBas
     protected static IEnumerable<TestCaseData> ActualDateTimeAndLastUpdateDateForActualData => new[]
     {
         new TestCaseData(new DateTime(2022, 3, 4, 23, 59, 59), new DateOnly(2022, 3, 4)),
-        new TestCaseData(new DateTime(2022, 5, 3, 0, 0, 1), new DateOnly(2022, 3, 2)),
+        new TestCaseData(new DateTime(2022, 5, 3, 0, 0, 1), new DateOnly(2022, 5, 2)),
         new TestCaseData(new DateTime(2016, 5, 26), new DateOnly(2016, 5, 25)),
-        new TestCaseData(new DateTime(2021, 8, 22, 14, 3, 23), new DateOnly(2016, 5, 20))
+        new TestCaseData(new DateTime(2021, 8, 22, 14, 3, 23), new DateOnly(2021, 8, 20))
     };
 
     protected static IEnumerable<TestCaseData> ActualDateTimeAndLastUpdateDateForNotActualData => new[]
@@ -35,6 +35,7 @@ internal class NextWorkingDayStrategyTestsCases : NextWorkingDayStrategyTestsBas
         new TestCaseData(new DateTime(2016, 5, 26), new DateOnly(2016, 5, 24)),
         new TestCaseData(new DateTime(2021, 8, 22, 0, 0, 1), new DateOnly(2016, 5, 19)),
         new TestCaseData(new DateTime(2022, 4, 30), new DateOnly(2022, 4, 1)),
-        new TestCaseData(new DateTime(2022, 4, 28, 22, 12, 34), new DateOnly(2021, 4, 28))
+        new TestCaseData(new DateTime(2022, 4, 28, 22, 12, 34), new DateOnly(2021, 4, 28)),
+        new TestCaseData(new DateTime(2020, 10, 5), new DateOnly(2020, 10, 2))
     };
 }

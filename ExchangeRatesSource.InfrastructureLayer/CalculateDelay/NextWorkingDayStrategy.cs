@@ -16,17 +16,17 @@ public class NextWorkingDayStrategy : ICalculateDelayStrategy
 
     public int CalculateDelay()
     {
-        var actualTime = _timeProvider.Now;
-        var currentHour = actualTime.Hour;
+        var actualDateTime = _timeProvider.Now;
+        var currentHour = actualDateTime.Hour;
         var hoursToNextDay = 24 - currentHour;
         var delay = OneHourDelay * hoursToNextDay;
 
-        var afterDelay = actualTime.AddMilliseconds(delay);
+        var afterDelay = actualDateTime.AddMilliseconds(delay);
 
         while (afterDelay.IsFreeDay())
         {
             delay += OneDayDelay;
-            afterDelay = actualTime.AddMilliseconds(delay);
+            afterDelay = actualDateTime.AddMilliseconds(delay);
         }
         
         return delay;
@@ -34,6 +34,23 @@ public class NextWorkingDayStrategy : ICalculateDelayStrategy
 
     public bool CheckIfActual(DateOnly lastUpdateDate)
     {
-        throw new NotImplementedException();
+        var actualDate = DateOnly.FromDateTime(_timeProvider.Now);
+
+        if (actualDate == lastUpdateDate)
+        {
+            return true;
+        }
+        
+        while (lastUpdateDate != actualDate)
+        {
+            lastUpdateDate = lastUpdateDate.AddDays(1);
+
+            if (!lastUpdateDate.IsFreeDay())
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

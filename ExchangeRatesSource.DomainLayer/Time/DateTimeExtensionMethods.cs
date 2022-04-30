@@ -5,13 +5,17 @@ public static class DateTimeExtensionMethods
     public static bool IsFreeDay(this DateTime dateTime)
     {
         var date = DateOnly.FromDateTime(dateTime);
+        return date.IsFreeDay();
+    }
 
+    public static bool IsFreeDay(this DateOnly date)
+    {
         if (Weekend.Contains(date.DayOfWeek))
         {
             return true;
         }
 
-        var monthAndDay = MonthAndDay.FromDateTime(dateTime);
+        var monthAndDay = MonthAndDay.FromOnlyDate(date);
 
         if (StaticFreeDays.Contains(monthAndDay))
         {
@@ -28,7 +32,7 @@ public static class DateTimeExtensionMethods
 
         return movingFreeDays.Contains(date);
     }
-
+    
     private static readonly List<DayOfWeek> Weekend = new()
     {
         DayOfWeek.Saturday,

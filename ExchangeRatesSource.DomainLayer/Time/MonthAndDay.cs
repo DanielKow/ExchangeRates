@@ -15,4 +15,9 @@ public struct MonthAndDay
     {
         return new MonthAndDay(dateTime.Month, dateTime.Day);
     }
+
+    public static MonthAndDay FromOnlyDate(DateOnly dateOnly)
+    {
+        return new MonthAndDay(dateOnly.Month, dateOnly.Day);
+    }
 }
