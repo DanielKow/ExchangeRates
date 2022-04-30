@@ -34,7 +34,8 @@ public class UpdateExchangeRatesService : BackgroundService
         while (!stoppingToken.IsCancellationRequested)
         {
             bool cacheUpdated = await TryUpdateCache();
-            await Task.Delay(OneHourDelay, stoppingToken);
+            int delay = cacheUpdated ? _calculateDelayStrategy.CalculateDelay() : OneHourDelay;
+            await Task.Delay(delay, stoppingToken);
         }
     }
 
@@ -47,35 +48,52 @@ public class UpdateExchangeRatesService : BackgroundService
             return await TryUpdateCacheNow();
         }
 
-        return await TryUpdateCacheIfNewer(lastUpdateDate.Value);
-    }
-
-    private async Task<bool> TryUpdateCacheIfNewer(DateOnly lastUpdateDate)
-    {
-        GettingExchangeRatesResult results = await _exchangeRatesSource.GetExchangeRatesAsync(_type);
-
-        if (results.Successfully == false)
+        if (_calculateDelayStrategy.CheckIfActual(lastUpdateDate.Value))
         {
-            return false;
+            return true;
         }
 
-        return true;
+        return await TryUpdateCacheIfNewer(lastUpdateDate.Value);
     }
 
     private async Task<bool> TryUpdateCacheNow()
     {
-        GettingExchangeRatesResult results = await _exchangeRatesSource.GetExchangeRatesAsync(_type);
+        GettingExchangeRatesResult result = await _exchangeRatesSource.GetExchangeRatesAsync(_type);
 
-        if (results.Successfully == false)
+        if (result.Successfully == false)
         {
             return false;
         }
 
-        await _unitOfWork.ExchangeRateType.UpsertManyAsync(results.ExchangeRates);
-        await _unitOfWork.SaveAsync();
-
-        await _cache.SaveAsync(results.LastUpdateDate);
+        await UpdateCache(result);
 
         return true;
+    }
+    
+    private async Task<bool> TryUpdateCacheIfNewer(DateOnly lastUpdateDate)
+    {
+        GettingExchangeRatesResult result = await _exchangeRatesSource.GetExchangeRatesAsync(_type);
+
+        if (result.Successfully == false)
+        {
+            return false;
+        }
+
+        if (result.LastUpdateDate <= lastUpdateDate)
+        {
+            return false;
+        }
+
+        await UpdateCache(result);
+
+        return true;
+    }
+
+    private async Task UpdateCache(GettingExchangeRatesResult result)
+    {
+        await _unitOfWork.ExchangeRateType.UpsertManyAsync(result.ExchangeRates);
+        await _unitOfWork.SaveAsync();
+
+        await _cache.SaveAsync(result.LastUpdateDate);
     }
 }
