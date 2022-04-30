@@ -15,6 +15,24 @@ public class AtLeastNextWorkingWednesdayStrategy : ICalculateDelayStrategy
 
     public int CalculateDelay()
     {
-        throw new NotImplementedException();
+        var actualTime = _timeProvider.Now;
+        var actualDayOfWeek = actualTime.DayOfWeek;
+        var toNextWednesday = DayOfWeek.Wednesday - actualDayOfWeek;
+
+        if (toNextWednesday < 1)
+        {
+            toNextWednesday = 7 + toNextWednesday;
+        }
+
+        var delay = toNextWednesday * OneDayDelay;
+        var afterDelay = actualTime.AddMilliseconds(delay);
+
+        while (afterDelay.IsFreeDay())
+        {
+            delay += OneDayDelay;
+            afterDelay = actualTime.AddMilliseconds(delay);
+        }
+        
+        return delay;
     }
 }
