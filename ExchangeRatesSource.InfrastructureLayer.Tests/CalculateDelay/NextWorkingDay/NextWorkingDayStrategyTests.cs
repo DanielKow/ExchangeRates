@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 
-namespace ExchangeRatesSource.InfrastructureLayer.Tests.CalculateDelay.NextDay;
+namespace ExchangeRatesSource.InfrastructureLayer.Tests.CalculateDelay.NextWorkingDay;
 
 [TestFixture]
 [Category("unit")]

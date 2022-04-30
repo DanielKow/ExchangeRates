@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace ExchangeRatesSource.InfrastructureLayer.Tests.CalculateDelay.NextDay;
+namespace ExchangeRatesSource.InfrastructureLayer.Tests.CalculateDelay.NextWorkingDay;
 
 [Category("test_cases")]
 internal class NextWorkingDayStrategyTestsCases : NextWorkingDayStrategyTestsBase

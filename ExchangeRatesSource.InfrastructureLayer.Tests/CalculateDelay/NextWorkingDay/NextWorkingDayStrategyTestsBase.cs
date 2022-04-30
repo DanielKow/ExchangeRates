@@ -1,7 +1,7 @@
 using ExchangeRatesSource.InfrastructureLayer.CalculateDelay;
 using NUnit.Framework;
 
-namespace ExchangeRatesSource.InfrastructureLayer.Tests.CalculateDelay.NextDay;
+namespace ExchangeRatesSource.InfrastructureLayer.Tests.CalculateDelay.NextWorkingDay;
 
 [Category("base")]
 internal class NextWorkingDayStrategyTestsBase : CalculateDelayTestsBase
