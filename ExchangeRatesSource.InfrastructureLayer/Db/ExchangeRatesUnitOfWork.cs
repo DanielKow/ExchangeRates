@@ -5,12 +5,12 @@ namespace ExchangeRatesSource.InfrastructureLayer.Db;
 
 public class ExchangeRatesUnitOfWork : IExchangeRatesUnitOfWork
 {
-    public IGenericRepository<ExchangeRateType> ExchangeRateType { get; }
+    public IGenericRepository<ExchangeRate> ExchangeRateType { get; }
     private readonly ExchangeRateContext _context;
 
     public ExchangeRatesUnitOfWork(
         ExchangeRateContext context,
-        IGenericRepository<ExchangeRateType> exchangeRateTypeRepository)
+        IGenericRepository<ExchangeRate> exchangeRateTypeRepository)
     {
         _context = context;
         ExchangeRateType = exchangeRateTypeRepository;

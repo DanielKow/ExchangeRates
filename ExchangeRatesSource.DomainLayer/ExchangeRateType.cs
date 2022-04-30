@@ -2,10 +2,16 @@ using System.Text.Json.Serialization;
 
 namespace ExchangeRatesSource.DomainLayer;
 
-public class ExchangeRateType
+public readonly struct ExchangeRateType
 {
-    public string Name { get; init; }
-    public DateOnly LastUpdateDate { get; init; }
+    public string Name { get; }
+    public DateOnly LastUpdateDate { get; }
+
+    public ExchangeRateType(string name, DateOnly lastUpdateDate)
+    {
+        Name = name;
+        LastUpdateDate = lastUpdateDate;
+    }
 
     public override bool Equals(object? obj)
     {

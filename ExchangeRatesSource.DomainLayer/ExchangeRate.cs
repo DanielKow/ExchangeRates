@@ -2,16 +2,17 @@ using System.Text.Json.Serialization;
 
 namespace ExchangeRatesSource.DomainLayer;
 
-public readonly struct ExchangeRate
+public class ExchangeRate
 {
-    public string Currency { get; }
-    public decimal Value { get; }
+    public string Currency { get; private set; }
+    public decimal Value { get; private set; }
+    public string Type { get; private set; }
 
-    [JsonConstructor]
-    public ExchangeRate(string currency, decimal value)
+    public ExchangeRate(string currency, decimal value, string type)
     {
         Currency = currency;
         Value = value;
+        Type = type;
     }
 
     public override bool Equals(object? obj)

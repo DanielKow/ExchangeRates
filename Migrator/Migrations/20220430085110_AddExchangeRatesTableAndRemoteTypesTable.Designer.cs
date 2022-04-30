@@ -2,6 +2,7 @@
 using ExchangeRatesSource.InfrastructureLayer.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Migrator.Migrations
 {
     [DbContext(typeof(ExchangeRateContext))]
-    partial class ExchangeRateContextModelSnapshot : ModelSnapshot
+    [Migration("20220430085110_AddExchangeRatesTableAndRemoteTypesTable")]
+    partial class AddExchangeRatesTableAndRemoteTypesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

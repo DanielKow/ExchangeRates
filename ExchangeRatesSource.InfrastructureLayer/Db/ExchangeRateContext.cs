@@ -5,7 +5,7 @@ namespace ExchangeRatesSource.InfrastructureLayer.Db;
 
 public class ExchangeRateContext : DbContext
 {
-    public DbSet<ExchangeRateType> Types { get; set; }
+    public DbSet<ExchangeRate> ExchangeRates { get; set; }
 
 
     public ExchangeRateContext(DbContextOptions<ExchangeRateContext> options) : base(options)
@@ -14,7 +14,7 @@ public class ExchangeRateContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ExchangeRateType>()
-            .HasKey(row => row.Name);
+        modelBuilder.Entity<ExchangeRate>()
+            .HasKey(row => row.Currency);
     }
 }
