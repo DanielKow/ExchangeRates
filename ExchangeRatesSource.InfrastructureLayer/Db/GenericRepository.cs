@@ -14,9 +14,9 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         DbSet = Context.Set<TEntity>();
     }
 
-    public virtual ValueTask<TEntity?> GetAsync(object id)
+    public virtual IQueryable<TEntity> GetAllAsync()
     {
-        return DbSet.FindAsync(id);
+        return DbSet.AsNoTracking();
     }
 
     public virtual async Task InsertAsync(TEntity toAdd)

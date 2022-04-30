@@ -22,6 +22,7 @@ builder.Services.AddScoped<IGenericRepository<ExchangeRate>, GenericRepository<E
 builder.Services.AddScoped<ILastUpdateDateCache, LastUpdateDateCache>();
 builder.Services.AddScoped<IExchangeRatesUnitOfWork, ExchangeRatesUnitOfWork>();
 builder.Services.AddScoped<IUpdateExchangeRatesScopedService, UpdateExchangeRatesScopedService>();
+builder.Services.AddScoped<IGetExchangeRatesService, GetExchangeRatesService>();
 
 builder.Services.AddStackExchangeRedisCache(options =>
 {

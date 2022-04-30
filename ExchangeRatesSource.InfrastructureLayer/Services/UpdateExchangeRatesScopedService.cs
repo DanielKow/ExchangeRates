@@ -41,7 +41,7 @@ public class UpdateExchangeRatesScopedService : IUpdateExchangeRatesScopedServic
             
         try
         {
-            bool cacheUpdated = await TryUpdateCache();
+            bool cacheUpdated = await TryUpdate();
             delay = cacheUpdated ? _calculateDelayStrategy.CalculateDelay() : OneHourDelay;
         }
         catch (Exception ex)
@@ -53,18 +53,18 @@ public class UpdateExchangeRatesScopedService : IUpdateExchangeRatesScopedServic
         await Task.Delay(delay, stoppingToken);
     }
     
-    private async Task<bool> TryUpdateCache()
+    private async Task<bool> TryUpdate()
     {
         DateOnly? lastUpdateDate = await _cache.GetAsync();
 
         if (lastUpdateDate == null)
         {
-            return await TryUpdateCacheNow();
+            return await TryUpdateNow();
         }
 
         if (!_calculateDelayStrategy.CheckIfActual(lastUpdateDate.Value))
         {
-            return await TryUpdateCacheIfNewer(lastUpdateDate.Value);
+            return await TryUpdateIfNewer(lastUpdateDate.Value);
         }
         
         _logger.Log(LogLevel.Debug, "Exchange rates already actual for type {Type}", _type);
@@ -72,7 +72,7 @@ public class UpdateExchangeRatesScopedService : IUpdateExchangeRatesScopedServic
 
     }
 
-    private async Task<bool> TryUpdateCacheNow()
+    private async Task<bool> TryUpdateNow()
     {
         GettingExchangeRatesResult result = await _exchangeRatesSource.GetExchangeRatesAsync(_type);
 
@@ -82,12 +82,12 @@ public class UpdateExchangeRatesScopedService : IUpdateExchangeRatesScopedServic
             return false;
         }
 
-        await UpdateCache(result);
+        await Update(result);
 
         return true;
     }
     
-    private async Task<bool> TryUpdateCacheIfNewer(DateOnly lastUpdateDate)
+    private async Task<bool> TryUpdateIfNewer(DateOnly lastUpdateDate)
     {
         GettingExchangeRatesResult result = await _exchangeRatesSource.GetExchangeRatesAsync(_type);
 
@@ -103,12 +103,12 @@ public class UpdateExchangeRatesScopedService : IUpdateExchangeRatesScopedServic
             return false;
         }
 
-        await UpdateCache(result);
+        await Update(result);
 
         return true;
     }
 
-    private async Task UpdateCache(GettingExchangeRatesResult result)
+    private async Task Update(GettingExchangeRatesResult result)
     {
         await _unitOfWork.ExchangeRate.UpsertManyAsync(result.ExchangeRates);
         await _unitOfWork.SaveAsync();

@@ -1,3 +1,5 @@
+using ExchangeRatesSource.ApplicationLayer.Services;
+using ExchangeRatesSource.DomainLayer;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExchangeRatesSource.PresentationLayer.Controllers;
@@ -7,12 +9,16 @@ namespace ExchangeRatesSource.PresentationLayer.Controllers;
 [ApiVersion("1.0")]
 public class ExchangeRatesController : ControllerBase
 {
-    [HttpGet(Name = "GetExchangeRates")]
-    public IEnumerable<string> Get()
+    private readonly IGetExchangeRatesService _getExchangeRatesService;
+
+    public ExchangeRatesController(IGetExchangeRatesService getExchangeRatesService)
     {
-        return new[]
-        {
-            "test"
-        };
+        _getExchangeRatesService = getExchangeRatesService;
+    }
+
+    [HttpGet(Name = "GetExchangeRates")]
+    public async Task<IEnumerable<ExchangeRate>> Get()
+    {
+        return await _getExchangeRatesService.GetAll();
     }
 }
