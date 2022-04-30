@@ -1,14 +1,32 @@
 using ExchangeRatesSource.ApplicationLayer;
+using ExchangeRatesSource.ApplicationLayer.CalculateDelay;
+using ExchangeRatesSource.DomainLayer;
+using ExchangeRatesSource.InfrastructureLayer.Cache;
+using ExchangeRatesSource.InfrastructureLayer.CalculateDelay;
+using ExchangeRatesSource.InfrastructureLayer.Db;
 using ExchangeRatesSource.InfrastructureLayer.Nbp;
+using ExchangeRatesSource.InfrastructureLayer.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
 
+builder.Services.AddScoped<ICalculateDelayStrategyFactory, NbpCalculateDelayStrategyFactory>();
+builder.Services.AddScoped<IExchangeRatesSource, NbpExchangeRatesSource>();
+builder.Services.AddScoped<IGenericRepository<ExchangeRate>, GenericRepository<ExchangeRate>>();
+builder.Services.AddScoped<ILastUpdateDateCache, LastUpdateDateRedisCache>();
+builder.Services.AddScoped<IExchangeRatesUnitOfWork, ExchangeRatesUnitOfWork>();
+
 builder.Services.AddHttpClient<IExchangeRatesSource, NbpExchangeRatesSource>(client =>
 {
     client.BaseAddress = new Uri(configuration["NbpUrl"]);
+});
+
+builder.Services.AddDbContext<ExchangeRateContext>(options =>
+{
+    options.UseNpgsql(configuration.GetConnectionString("Db"));
 });
 
 builder.Services.AddControllers()
@@ -24,6 +42,8 @@ builder.Services.AddApiVersioning(options =>
     options.ReportApiVersions = true;
     options.ApiVersionReader = new UrlSegmentApiVersionReader();
 });
+
+builder.Services.AddHostedService<UpdateExchangeRatesService>();
 
 var app = builder.Build();
 

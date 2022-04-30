@@ -10,31 +10,42 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
     depends_on:
-      - source
-  source:
-    image: exchange.rates.source
+      - sourceA
+  sourceA:
+    image: exchange.rates.source.a
     build:
       context: .
       dockerfile: ExchangeRatesSource.PresentationLayer/Dockerfile
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__Db: User ID=root; Password=root; Host=db; Port=5432; Database=postgres;
+      ExchangeRateType: A
+      ConnectionStrings__Db: User ID=root; Password=root; Host=dbA; Port=5432; Database=postgres;
     depends_on:
-      - db
-      - migrator
-  migrator:
-    image: insert.task.migrator
+      - dbA
+  sourceB:
+    image: exchange.rates.source.b
     build:
       context: .
-      dockerfile: Migrator/Dockerfile
+      dockerfile: ExchangeRatesSource.PresentationLayer/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ExchangeRateType: B
+      ConnectionStrings__Db: User ID=root; Password=root; Host=dbB; Port=5432; Database=postgres;
     depends_on:
-      - db
-  db:
+      - dbB
+  dbA:
     image: postgres
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
     ports:
       - "8001:5432"
-
+  dbB:
+    image: postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    ports:
+      - "8002:5432"
+    
     
