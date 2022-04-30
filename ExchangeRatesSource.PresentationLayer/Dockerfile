@@ -6,7 +6,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["ExchangeRatesSource.PresentationLayer/ExchangeRatesSource.PresentationLayer.csproj", "ExchangeRatesSource.PresentationLayer/"]
-RUN dotnet restore "ExchangeRatesSource/ExchangeRatesSource.PresentationLayer.csproj"
+RUN dotnet restore "ExchangeRatesSource.PresentationLayer/ExchangeRatesSource.PresentationLayer.csproj"
 COPY . .
 WORKDIR "/src/ExchangeRatesSource.PresentationLayer"
 RUN dotnet build "ExchangeRatesSource.PresentationLayer.csproj" -c Release -o /app/build
