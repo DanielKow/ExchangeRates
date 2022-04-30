@@ -20,6 +20,7 @@ public class UpdateExchangeRatesService : BackgroundService
     private readonly string _type;
     
     private const int OneHourDelay = 60 * 60 * 1_000;
+    private const int FiveMinutesDelay = 5 * 60 * 1_000;
 
     public UpdateExchangeRatesService(
         IServiceProvider services,
@@ -46,7 +47,7 @@ public class UpdateExchangeRatesService : BackgroundService
         
         while (!stoppingToken.IsCancellationRequested)
         {
-            int delay = OneHourDelay;
+            int delay;
             
             try
             {
@@ -56,7 +57,7 @@ public class UpdateExchangeRatesService : BackgroundService
             catch (Exception ex)
             {
                 _logger.Log(LogLevel.Debug, "There was error during updating cache: {Error}", ex);
-                delay = OneHourDelay;
+                delay = FiveMinutesDelay;
             }
 
             await Task.Delay(delay, stoppingToken);
