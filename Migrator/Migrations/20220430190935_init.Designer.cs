@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Migrator.Migrations
 {
     [DbContext(typeof(ExchangeRateContext))]
-    [Migration("20220430085110_AddExchangeRatesTableAndRemoteTypesTable")]
-    partial class AddExchangeRatesTableAndRemoteTypesTable
+    [Migration("20220430190935_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,7 +37,7 @@ namespace Migrator.Migrations
 
                     b.HasKey("Currency");
 
-                    b.ToTable("ExchangeRates");
+                    b.ToTable("ExchangeRate");
                 });
 #pragma warning restore 612, 618
         }

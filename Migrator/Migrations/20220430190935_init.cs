@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -10,22 +9,23 @@ namespace Migrator.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Types",
+                name: "ExchangeRate",
                 columns: table => new
                 {
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    LastUpdateDate = table.Column<DateOnly>(type: "date", nullable: false)
+                    Currency = table.Column<string>(type: "text", nullable: false),
+                    Value = table.Column<decimal>(type: "numeric", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Types", x => x.Name);
+                    table.PrimaryKey("PK_ExchangeRate", x => x.Currency);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Types");
+                name: "ExchangeRate");
         }
     }
 }

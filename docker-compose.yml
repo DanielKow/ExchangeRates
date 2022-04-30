@@ -11,8 +11,9 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
     depends_on:
       - sourceA
+      - sourceB
   sourceA:
-    image: exchange.rates.source.a
+    image: exchange.rates.source
     build:
       context: .
       dockerfile: ExchangeRatesSource.PresentationLayer/Dockerfile
@@ -20,10 +21,13 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ExchangeRateType: A
       ConnectionStrings__Db: User ID=root; Password=root; Host=dbA; Port=5432; Database=postgres;
+      ConnectionStrings__Redis: redisA:6379
     depends_on:
       - dbA
+      - redisA
+      - migratorA
   sourceB:
-    image: exchange.rates.source.b
+    image: exchange.rates.source
     build:
       context: .
       dockerfile: ExchangeRatesSource.PresentationLayer/Dockerfile
@@ -31,21 +35,49 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ExchangeRateType: B
       ConnectionStrings__Db: User ID=root; Password=root; Host=dbB; Port=5432; Database=postgres;
+      ConnectionStrings__Redis: redisB:6379
     depends_on:
       - dbB
+      - redisB
+      - migratorB
   dbA:
     image: postgres
+    restart: always
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
+      APP_DB_USER: docker
+      APP_DB_PASS: docker
+      APP_DB_NAME: docker
     ports:
       - "8001:5432"
   dbB:
     image: postgres
+    restart: always
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
     ports:
       - "8002:5432"
-    
-    
+  redisA:
+    image: redis:alpine
+  redisB:
+    image: redis:alpine
+  migratorA:
+    image: migrator
+    build:
+      context: .
+      dockerfile: Migrator/Dockerfile
+    environment:
+      ConnectionStrings__Db: User ID=root; Password=root; Host=dbA; Port=5432; Database=postgres;
+    depends_on:
+      - dbA
+  migratorB:
+    image: migrator
+    build:
+      context: .
+      dockerfile: Migrator/Dockerfile
+    environment:
+      ConnectionStrings__Db: User ID=root; Password=root; Host=dbB; Port=5432; Database=postgres;
+    depends_on:
+      - dbB

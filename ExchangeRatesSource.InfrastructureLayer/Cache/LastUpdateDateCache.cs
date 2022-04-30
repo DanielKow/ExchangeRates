@@ -1,35 +1,32 @@
 using System.Globalization;
 using ExchangeRatesSource.ApplicationLayer;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
-using StackExchange.Redis;
 
 namespace ExchangeRatesSource.InfrastructureLayer.Cache;
 
-public class LastUpdateDateRedisCache : ILastUpdateDateCache
+public class LastUpdateDateCache : ILastUpdateDateCache
 {
-    private readonly IConnectionMultiplexer _redis;
-    private readonly ILogger<LastUpdateDateRedisCache> _logger;
+    private readonly IDistributedCache _cache;
+    private readonly ILogger<LastUpdateDateCache> _logger;
     private const string DateFormat = "dd.MM.yyyy";
     private const string Key = "LastUpdateDate";
 
-    public LastUpdateDateRedisCache(IConnectionMultiplexer redis, ILogger<LastUpdateDateRedisCache> logger)
+    public LastUpdateDateCache(IDistributedCache cache, ILogger<LastUpdateDateCache> logger)
     {
-        _redis = redis;
+        _cache = cache;
         _logger = logger;
     }
 
     public async Task SaveAsync(DateOnly lastUpdateDate)
     {
-        var db = _redis.GetDatabase();
-
         string dateString = lastUpdateDate.ToString(DateFormat, CultureInfo.InvariantCulture);
-        await db.StringSetAsync(Key, dateString);
+        await _cache.SetStringAsync(Key, dateString);
     }
 
     public async Task<DateOnly?> GetAsync()
     {
-        var db = _redis.GetDatabase();
-        string data = await db.StringGetAsync(Key);
+        string data = await _cache.GetStringAsync(Key);
 
         if (DateOnly.TryParseExact(data, DateFormat, out var date))
         {

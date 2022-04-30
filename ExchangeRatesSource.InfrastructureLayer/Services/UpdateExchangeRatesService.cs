@@ -2,6 +2,7 @@ using ExchangeRatesSource.ApplicationLayer;
 using ExchangeRatesSource.ApplicationLayer.CalculateDelay;
 using ExchangeRatesSource.DomainLayer;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -9,51 +10,69 @@ namespace ExchangeRatesSource.InfrastructureLayer.Services;
 
 public class UpdateExchangeRatesService : BackgroundService
 {
-    private readonly IExchangeRatesSource _exchangeRatesSource;
-    private readonly ILastUpdateDateCache _cache;
-    private readonly IExchangeRatesUnitOfWork _unitOfWork;
-    private readonly ICalculateDelayStrategy _calculateDelayStrategy;
+    private IServiceProvider Services { get; }
+    private IExchangeRatesSource ExchangeRatesSource { get; set; } = null!;
+    private ILastUpdateDateCache Cache { get; set; } = null!;
+    private IExchangeRatesUnitOfWork UnitOfWork { get; set; } = null!;
+    private ICalculateDelayStrategy CalculateDelayStrategy { get; set; } = null!;
+    
     private readonly ILogger<UpdateExchangeRatesService> _logger;
     private readonly string _type;
+    
     private const int OneHourDelay = 60 * 60 * 1_000;
 
     public UpdateExchangeRatesService(
-        IExchangeRatesSource exchangeRatesSource,
-        ILastUpdateDateCache cache,
-        IExchangeRatesUnitOfWork unitOfWork,
-        ICalculateDelayStrategyFactory calculateDelayStrategyFactory,
+        IServiceProvider services,
         IConfiguration configuration, 
         ILogger<UpdateExchangeRatesService> logger)
     {
-        _exchangeRatesSource = exchangeRatesSource;
-        _cache = cache;
-        _unitOfWork = unitOfWork;
+        Services = services;
         _logger = logger;
         _type = configuration["ExchangeRateType"];
-        _calculateDelayStrategy = calculateDelayStrategyFactory.GetStrategyForType(_type);
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.Log(LogLevel.Debug, "Updating exchange rates with type {Type} started", _type);
+
+        using var scope = Services.CreateScope();
+        ICalculateDelayStrategyFactory factory =
+            scope.ServiceProvider.GetRequiredService<ICalculateDelayStrategyFactory>();
+
+        CalculateDelayStrategy = factory.GetStrategyForType(_type);
+        Cache = scope.ServiceProvider.GetRequiredService<ILastUpdateDateCache>();
+        UnitOfWork = scope.ServiceProvider.GetRequiredService<IExchangeRatesUnitOfWork>();
+        ExchangeRatesSource = scope.ServiceProvider.GetRequiredService<IExchangeRatesSource>();
+        
         while (!stoppingToken.IsCancellationRequested)
         {
-            bool cacheUpdated = await TryUpdateCache();
-            int delay = cacheUpdated ? _calculateDelayStrategy.CalculateDelay() : OneHourDelay;
+            int delay = OneHourDelay;
+            
+            try
+            {
+                bool cacheUpdated = await TryUpdateCache();
+                delay = cacheUpdated ? CalculateDelayStrategy.CalculateDelay() : OneHourDelay;
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Debug, "There was error during updating cache: {Error}", ex);
+                delay = OneHourDelay;
+            }
+
             await Task.Delay(delay, stoppingToken);
         }
     }
 
     private async Task<bool> TryUpdateCache()
     {
-        DateOnly? lastUpdateDate = await _cache.GetAsync();
+        DateOnly? lastUpdateDate = await Cache.GetAsync();
 
         if (lastUpdateDate == null)
         {
             return await TryUpdateCacheNow();
         }
 
-        if (!_calculateDelayStrategy.CheckIfActual(lastUpdateDate.Value))
+        if (!CalculateDelayStrategy.CheckIfActual(lastUpdateDate.Value))
         {
             return await TryUpdateCacheIfNewer(lastUpdateDate.Value);
         }
@@ -65,7 +84,7 @@ public class UpdateExchangeRatesService : BackgroundService
 
     private async Task<bool> TryUpdateCacheNow()
     {
-        GettingExchangeRatesResult result = await _exchangeRatesSource.GetExchangeRatesAsync(_type);
+        GettingExchangeRatesResult result = await ExchangeRatesSource.GetExchangeRatesAsync(_type);
 
         if (result.Successfully == false)
         {
@@ -80,7 +99,7 @@ public class UpdateExchangeRatesService : BackgroundService
     
     private async Task<bool> TryUpdateCacheIfNewer(DateOnly lastUpdateDate)
     {
-        GettingExchangeRatesResult result = await _exchangeRatesSource.GetExchangeRatesAsync(_type);
+        GettingExchangeRatesResult result = await ExchangeRatesSource.GetExchangeRatesAsync(_type);
 
         if (result.Successfully == false)
         {
@@ -101,10 +120,10 @@ public class UpdateExchangeRatesService : BackgroundService
 
     private async Task UpdateCache(GettingExchangeRatesResult result)
     {
-        await _unitOfWork.ExchangeRateType.UpsertManyAsync(result.ExchangeRates);
-        await _unitOfWork.SaveAsync();
+        await UnitOfWork.ExchangeRate.UpsertManyAsync(result.ExchangeRates);
+        await UnitOfWork.SaveAsync();
 
-        await _cache.SaveAsync(result.LastUpdateDate);
+        await Cache.SaveAsync(result.LastUpdateDate);
         _logger.Log(LogLevel.Debug, "Exchange rates updated for type {Type}", _type);
     }
 }

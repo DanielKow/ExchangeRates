@@ -5,7 +5,7 @@ namespace ExchangeRatesSource.InfrastructureLayer.Db;
 
 public class ExchangeRateContext : DbContext
 {
-    public DbSet<ExchangeRate> ExchangeRates { get; set; }
+    public DbSet<ExchangeRate> ExchangeRate { get; set; }
 
 
     public ExchangeRateContext(DbContextOptions<ExchangeRateContext> options) : base(options)

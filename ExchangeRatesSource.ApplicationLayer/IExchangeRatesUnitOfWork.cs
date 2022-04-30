@@ -4,6 +4,6 @@ namespace ExchangeRatesSource.ApplicationLayer;
 
 public interface IExchangeRatesUnitOfWork
 {
-    IGenericRepository<ExchangeRate> ExchangeRateType { get; }
+    IGenericRepository<ExchangeRate> ExchangeRate { get; }
     Task SaveAsync();
 }

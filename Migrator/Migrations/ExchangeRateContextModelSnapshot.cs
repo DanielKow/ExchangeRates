@@ -35,7 +35,7 @@ namespace Migrator.Migrations
 
                     b.HasKey("Currency");
 
-                    b.ToTable("ExchangeRates");
+                    b.ToTable("ExchangeRate");
                 });
 #pragma warning restore 612, 618
         }
