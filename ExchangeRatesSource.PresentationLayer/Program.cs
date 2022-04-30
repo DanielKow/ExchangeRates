@@ -1,5 +1,6 @@
 using ExchangeRatesSource.ApplicationLayer;
 using ExchangeRatesSource.ApplicationLayer.CalculateDelay;
+using ExchangeRatesSource.ApplicationLayer.Services;
 using ExchangeRatesSource.DomainLayer;
 using ExchangeRatesSource.DomainLayer.Time;
 using ExchangeRatesSource.InfrastructureLayer.Cache;
@@ -20,6 +21,7 @@ builder.Services.AddScoped<IExchangeRatesSource, NbpExchangeRatesSource>();
 builder.Services.AddScoped<IGenericRepository<ExchangeRate>, GenericRepository<ExchangeRate>>();
 builder.Services.AddScoped<ILastUpdateDateCache, LastUpdateDateCache>();
 builder.Services.AddScoped<IExchangeRatesUnitOfWork, ExchangeRatesUnitOfWork>();
+builder.Services.AddScoped<IUpdateExchangeRatesScopedService, UpdateExchangeRatesScopedService>();
 
 builder.Services.AddStackExchangeRedisCache(options =>
 {
