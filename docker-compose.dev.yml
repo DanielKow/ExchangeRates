@@ -3,6 +3,12 @@ services:
   webapi:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
+  sourceA:
+    ports:
+      - "8005:80"
+  sourceB:
+    ports:
+      - "8006:80"
   dbA:
     ports:
       - "8001:5432"
