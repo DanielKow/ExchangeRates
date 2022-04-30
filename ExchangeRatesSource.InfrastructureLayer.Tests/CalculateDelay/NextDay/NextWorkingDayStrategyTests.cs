@@ -5,9 +5,9 @@ namespace ExchangeRatesSource.InfrastructureLayer.Tests.CalculateDelay.NextDay;
 
 [TestFixture]
 [Category("unit")]
-internal class NextDayStrategyTests : NextDayStrategyTestsCases
+internal class NextWorkingDayStrategyTests : NextWorkingDayStrategyTestsCases
 {
-    [TestCaseSource(nameof(DateTimesToNextDay))]
+    [TestCaseSource(nameof(DateTimesToNextWorkingDay))]
     public void CalculateDelay_should_return_number_of_milliseconds_to_next_working_day_when_called(DateTime actualTime, DateOnly expectedDate)
     {
         // Arrange

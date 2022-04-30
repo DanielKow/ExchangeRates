@@ -7,6 +7,7 @@ public class NextWorkingDayStrategy : ICalculateDelayStrategy
 {
     private readonly ITimeProvider _timeProvider;
     private const int OneHourDelay = 60 * 60 * 1_000;
+    private const int OneDayDelay = 24 * OneHourDelay;
 
     public NextWorkingDayStrategy(ITimeProvider timeProvider)
     {
@@ -15,8 +16,19 @@ public class NextWorkingDayStrategy : ICalculateDelayStrategy
 
     public int CalculateDelay()
     {
-        var currentHour = _timeProvider.Now.Hour;
+        var actualTime = _timeProvider.Now;
+        var currentHour = actualTime.Hour;
         var hoursToNextDay = 24 - currentHour;
-        return OneHourDelay * hoursToNextDay;
+        var delay = OneHourDelay * hoursToNextDay;
+
+        var afterDelay = actualTime.AddMilliseconds(delay);
+
+        while (afterDelay.IsFreeDay())
+        {
+            delay += OneDayDelay;
+            afterDelay = actualTime.AddMilliseconds(delay);
+        }
+        
+        return delay;
     }
 }
