@@ -58,7 +58,7 @@ public class NbpExchangeRatesSource : IExchangeRatesSource
             return new GettingExchangeRatesResult();
         }
 
-        var rates = table.Rates.Select(row => new ExchangeRate(row.Currency, row.Value, table.Table.Value));
+        var rates = table.Rates.Select(row => new ExchangeRate(row.Currency, row.Value));
         return new GettingExchangeRatesResult(table.LastUpdateDate, ImmutableList.Create(rates.ToArray()));
     }
 }

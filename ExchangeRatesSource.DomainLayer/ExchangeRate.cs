@@ -2,15 +2,13 @@ namespace ExchangeRatesSource.DomainLayer;
 
 public class ExchangeRate
 {
-    public string Currency { get; private set; }
-    public decimal Value { get; private set; }
-    public string Type { get; private set; }
+    public string Currency { get; init; }
+    public decimal Value { get; init; }
 
-    public ExchangeRate(string currency, decimal value, string type)
+    public ExchangeRate(string currency, decimal value)
     {
         Currency = currency;
         Value = value;
-        Type = type;
     }
 
     public override bool Equals(object? obj)
