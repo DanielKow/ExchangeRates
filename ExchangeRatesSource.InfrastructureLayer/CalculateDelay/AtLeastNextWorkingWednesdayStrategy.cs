@@ -32,7 +32,7 @@ public class AtLeastNextWorkingWednesdayStrategy : ICalculateDelayStrategy
             delay += OneDayDelay;
             afterDelay = actualTime.AddMilliseconds(delay);
         }
-        
+
         return delay;
     }
 
@@ -53,12 +53,11 @@ public class AtLeastNextWorkingWednesdayStrategy : ICalculateDelayStrategy
         }
 
         DateOnly nextUpdateDate = lastUpdateDate.AddDays(toFirstWednesdayAfterLastUpdate);
-
         while (nextUpdateDate.IsFreeDay())
         {
             nextUpdateDate = nextUpdateDate.AddDays(1);
         }
-        
+
         return nextUpdateDate > actualDate;
     }
 }

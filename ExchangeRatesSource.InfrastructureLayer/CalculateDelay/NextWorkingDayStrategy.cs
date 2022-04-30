@@ -28,7 +28,7 @@ public class NextWorkingDayStrategy : ICalculateDelayStrategy
             delay += OneDayDelay;
             afterDelay = actualDateTime.AddMilliseconds(delay);
         }
-        
+
         return delay;
     }
 
@@ -40,17 +40,13 @@ public class NextWorkingDayStrategy : ICalculateDelayStrategy
         {
             return true;
         }
-        
-        while (lastUpdateDate != actualDate)
+
+        DateOnly nextUpdateDate = lastUpdateDate.AddDays(1);
+        while (nextUpdateDate.IsFreeDay())
         {
-            lastUpdateDate = lastUpdateDate.AddDays(1);
-
-            if (!lastUpdateDate.IsFreeDay())
-            {
-                return false;
-            }
+            nextUpdateDate = nextUpdateDate.AddDays(1);
         }
-
-        return true;
+        
+        return nextUpdateDate > actualDate;
     }
 }
