@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ExchangeRateContext>(options =>
 {
     options.UseNpgsql(
-        builder.Configuration.GetConnectionString("db"), 
+        builder.Configuration.GetConnectionString("Db"), 
         b => b.MigrationsAssembly("Migrator"));
 });
 
