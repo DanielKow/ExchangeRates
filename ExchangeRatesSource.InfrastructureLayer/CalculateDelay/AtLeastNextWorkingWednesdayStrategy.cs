@@ -21,7 +21,7 @@ public class AtLeastNextWorkingWednesdayStrategy : ICalculateDelayStrategy
 
         if (toNextWednesday < 1)
         {
-            toNextWednesday = 7 + toNextWednesday;
+            toNextWednesday += 7;
         }
 
         var delay = toNextWednesday * OneDayDelay;
@@ -38,6 +38,27 @@ public class AtLeastNextWorkingWednesdayStrategy : ICalculateDelayStrategy
 
     public bool CheckIfActual(DateOnly lastUpdateDate)
     {
-        throw new NotImplementedException();
+        var actualDate = DateOnly.FromDateTime(_timeProvider.Now);
+
+        if (actualDate == lastUpdateDate)
+        {
+            return true;
+        }
+
+        var toFirstWednesdayAfterLastUpdate = DayOfWeek.Wednesday - lastUpdateDate.DayOfWeek;
+
+        if (toFirstWednesdayAfterLastUpdate < 1)
+        {
+            toFirstWednesdayAfterLastUpdate += 7;
+        }
+
+        DateOnly nextUpdateDate = lastUpdateDate.AddDays(toFirstWednesdayAfterLastUpdate);
+
+        while (nextUpdateDate.IsFreeDay())
+        {
+            nextUpdateDate = nextUpdateDate.AddDays(1);
+        }
+        
+        return nextUpdateDate > actualDate;
     }
 }
