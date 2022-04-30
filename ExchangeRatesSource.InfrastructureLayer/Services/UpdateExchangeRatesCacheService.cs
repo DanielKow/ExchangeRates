@@ -7,13 +7,13 @@ namespace ExchangeRatesSource.InfrastructureLayer.Services;
 public class UpdateExchangeRatesCacheService : BackgroundService
 {
     private readonly IExchangeRatesSource _exchangeRatesSource;
-    private readonly IExchangeRatesTypeCache _cache;
+    private readonly ILastUpdateDateCache _cache;
     private readonly IExchangeRatesUnitOfWork _unitOfWork;
     private const int OneHourDelay = 60 * 60 * 1_000;
 
     public UpdateExchangeRatesCacheService(
         IExchangeRatesSource exchangeRatesSource,
-        IExchangeRatesTypeCache cache,
+        ILastUpdateDateCache cache,
         IExchangeRatesUnitOfWork unitOfWork)
     {
         _exchangeRatesSource = exchangeRatesSource;
