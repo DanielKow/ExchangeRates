@@ -36,7 +36,9 @@ internal class AtLeastNextWorkingWednesdayStrategyTestsCases : AtLeastNextWorkin
         new TestCaseData(new DateTime(2022, 4, 21, 0, 0, 1), new DateOnly(2022, 4, 20)),
         new TestCaseData(new DateTime(2022, 4, 23), new DateOnly(2022, 4, 20)),
         new TestCaseData(new DateTime(2016, 1, 18, 17, 7, 0), new DateOnly(2016, 1, 18)),
-        new TestCaseData(new DateTime(2017, 11, 1), new DateOnly(2017, 10, 25))
+        new TestCaseData(new DateTime(2017, 11, 1), new DateOnly(2017, 10, 25)),
+        new TestCaseData(new DateTime(2015, 11, 11), new DateOnly(2015, 11, 4)),
+        new TestCaseData(new DateTime(2015, 11, 17), new DateOnly(2015, 11, 12))
     };
 
     protected static IEnumerable<TestCaseData> ActualDateTimeAndLastUpdateDateForNotActualData => new[]
@@ -48,6 +50,9 @@ internal class AtLeastNextWorkingWednesdayStrategyTestsCases : AtLeastNextWorkin
         new TestCaseData(new DateTime(2022, 10, 29), new DateOnly(2017, 10, 29)),
         new TestCaseData(new DateTime(2022, 2, 15), new DateOnly(2022, 2, 2)),
         new TestCaseData(new DateTime(2021, 11, 11), new DateOnly(2021, 11, 3)),
-        new TestCaseData(new DateTime(2021, 9, 18), new DateOnly(2021, 9, 8))
+        new TestCaseData(new DateTime(2021, 9, 18), new DateOnly(2021, 9, 8)),
+        new TestCaseData(new DateTime(2015, 11, 12), new DateOnly(2015, 11, 4)),
+        new TestCaseData(new DateTime(2015, 11, 18), new DateOnly(2015, 11, 12)),
+        new TestCaseData(new DateTime(2015, 11, 20), new DateOnly(2015, 11, 12)),
     };
 }
