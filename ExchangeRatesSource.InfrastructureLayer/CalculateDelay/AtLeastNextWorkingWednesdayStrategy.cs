@@ -1,4 +1,4 @@
-using ExchangeRatesSource.ApplicationLayer;
+using ExchangeRatesSource.ApplicationLayer.CalculateDelay;
 using ExchangeRatesSource.DomainLayer.Time;
 
 namespace ExchangeRatesSource.InfrastructureLayer.CalculateDelay;

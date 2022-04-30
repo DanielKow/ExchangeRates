@@ -1,4 +1,4 @@
-namespace ExchangeRatesSource.ApplicationLayer;
+namespace ExchangeRatesSource.ApplicationLayer.CalculateDelay;
 
 public interface ICalculateDelayStrategy
 {

@@ -8,7 +8,7 @@ namespace ExchangeRatesSource.InfrastructureLayer.Tests.CalculateDelay;
 [Category("base")]
 internal class CalculateDelayTestsBase
 {
-    private Mock<ITimeProvider> _timeProviderMock;
+    private Mock<ITimeProvider> _timeProviderMock = null!;
 
     [SetUp]
     public void SetUp()
