@@ -6,7 +6,7 @@ namespace ExchangeRatesSource.DomainLayer.Tests.Time;
 
 [TestFixture]
 [Category("unit")]
-internal class DateTimeExtensionMethodsTests : DateTimeExtensionMethodsTestsCases
+internal class TimeExtensionMethodsTests : TimeExtensionMethodsTestsCases
 {
     [TestCaseSource(nameof(FreeDays))]
     public void IsFreeDay_should_return_true_when_it_is_free_day(DateTime dateTime)

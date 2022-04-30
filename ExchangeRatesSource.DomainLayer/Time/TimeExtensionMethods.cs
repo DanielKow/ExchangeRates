@@ -1,6 +1,6 @@
 namespace ExchangeRatesSource.DomainLayer.Time;
 
-public static class DateTimeExtensionMethods
+public static class TimeExtensionMethods
 {
     public static bool IsFreeDay(this DateTime dateTime)
     {

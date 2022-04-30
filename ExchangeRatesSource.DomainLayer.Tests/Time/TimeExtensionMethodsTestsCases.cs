@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace ExchangeRatesSource.DomainLayer.Tests.Time;
 
 [Category("test_cases")]
-internal class DateTimeExtensionMethodsTestsCases
+internal class TimeExtensionMethodsTestsCases
 {
     protected static IEnumerable<DateTime> FreeDays => new[]
     {
