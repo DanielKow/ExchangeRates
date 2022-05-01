@@ -10,6 +10,7 @@ public class GetFromInternalSourceChainLink : AbstractGetExchangeRatesChainLink
 {
     private readonly HttpClient _httpClient;
     private readonly IInternalSourcesConfig _internalSourcesConfig;
+    private readonly JsonSerializerOptions _jsonSerializerOptions;
 
     public GetFromInternalSourceChainLink(
         HttpClient httpClient,
@@ -18,6 +19,10 @@ public class GetFromInternalSourceChainLink : AbstractGetExchangeRatesChainLink
     {
         _httpClient = httpClient;
         _internalSourcesConfig = internalSourcesConfig;
+        _jsonSerializerOptions = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        };
     }
 
     protected override async Task<IImmutableList<ExchangeRate>> ConcreteGetExchangeRate()
@@ -56,7 +61,7 @@ public class GetFromInternalSourceChainLink : AbstractGetExchangeRatesChainLink
         }
 
         string contentString = await response.Content.ReadAsStringAsync();
-        var content = JsonSerializer.Deserialize<ExchangeRate[]>(contentString);
+        var content = JsonSerializer.Deserialize<ExchangeRate[]>(contentString, _jsonSerializerOptions);
 
         if (content != null)
         {
