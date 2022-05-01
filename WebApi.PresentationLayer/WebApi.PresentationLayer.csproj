@@ -13,7 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ExchangeRatesSource.InfrastructureLayer\ExchangeRatesSource.InfrastructureLayer.csproj" />
       <ProjectReference Include="..\ExchangeRatesSource.Nbp.InfrastructureLayer\ExchangeRatesSource.Nbp.InfrastructureLayer.csproj" />
       <ProjectReference Include="..\WebApi.ApplicationLayer\WebApi.ApplicationLayer.csproj" />
       <ProjectReference Include="..\WebApi.DomainLayer\WebApi.DomainLayer.csproj" />
