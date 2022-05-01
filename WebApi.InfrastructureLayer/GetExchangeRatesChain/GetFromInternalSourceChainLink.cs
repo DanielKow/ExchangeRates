@@ -22,6 +22,8 @@ public class GetFromInternalSourceChainLink : AbstractGetExchangeRatesChainLink
 
     protected override async Task<IImmutableList<ExchangeRate>> ConcreteGetExchangeRate()
     {
+        _logger.Log(LogLevel.Information, "Getting exchange rates from internal sources started");
+        
         var tasks = new List<Task<IEnumerable<ExchangeRate>>>();
 
         foreach (var sourceUrl in _internalSourcesConfig.InternalSourcesUrls)
