@@ -7,7 +7,7 @@ namespace WebApi.InfrastructureLayer.GetExchangeRatesChain;
 
 public abstract class AbstractGetExchangeRatesChainLink : IGetExchangeRatesChainLink
 {
-    private readonly ILogger<AbstractGetExchangeRatesChainLink> _logger;
+    protected readonly ILogger<AbstractGetExchangeRatesChainLink> _logger;
     private IGetExchangeRatesChainLink? _next;
 
     protected AbstractGetExchangeRatesChainLink(ILogger<AbstractGetExchangeRatesChainLink> logger)
@@ -19,7 +19,14 @@ public abstract class AbstractGetExchangeRatesChainLink : IGetExchangeRatesChain
     {
         try
         {
-            return await ConcreteGetExchangeRate();
+            var exchangeRates = await ConcreteGetExchangeRate();
+
+            if (!exchangeRates.Any() && _next != null)
+            {
+                return await _next.GetExchangeRates();
+            }
+
+            return exchangeRates;
         }
         catch (Exception ex)
         {

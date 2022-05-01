@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\WebApi.ApplicationLayer\WebApi.ApplicationLayer.csproj" />
+      <ProjectReference Include="..\WebApi.DomainLayer\WebApi.DomainLayer.csproj" />
     </ItemGroup>
 
     <ItemGroup>
