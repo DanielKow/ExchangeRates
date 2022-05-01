@@ -14,7 +14,7 @@ public class GetFromExternalSourceChainLink : AbstractGetExchangeRatesChainLink
     public GetFromExternalSourceChainLink(
         IExchangeRatesSource exchangeRatesSource,
         IExternalSourcesConfig externalSourcesConfig,
-        ILogger<GetFromExternalSourceChainLink> logger) : base(logger)
+        ILogger logger) : base(logger)
     {
         _externalSourcesConfig = externalSourcesConfig;
         _exchangeRatesSource = exchangeRatesSource;
@@ -22,7 +22,7 @@ public class GetFromExternalSourceChainLink : AbstractGetExchangeRatesChainLink
 
     protected override async Task<IImmutableList<ExchangeRate>> ConcreteGetExchangeRate()
     {
-        _logger.Log(LogLevel.Information, "Getting exchange rates from external sources started");
+        Logger.Log(LogLevel.Information, "Getting exchange rates from external sources started");
 
         var tasks = new List<Task<GettingExchangeRatesResult>>();
 

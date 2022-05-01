@@ -1,7 +1,7 @@
 using System.Collections.Immutable;
 using ExchangeRatesSource.DomainLayer;
 
-namespace WebApi.ApplicationLayer;
+namespace WebApi.ApplicationLayer.GetExchangeRatesChain;
 
 public interface IGetExchangeRatesChainLink
 {

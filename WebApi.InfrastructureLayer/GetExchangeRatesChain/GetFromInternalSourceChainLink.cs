@@ -14,7 +14,7 @@ public class GetFromInternalSourceChainLink : AbstractGetExchangeRatesChainLink
     public GetFromInternalSourceChainLink(
         HttpClient httpClient,
         IInternalSourcesConfig internalSourcesConfig,
-        ILogger<GetFromInternalSourceChainLink> logger) : base(logger)
+        ILogger logger) : base(logger)
     {
         _httpClient = httpClient;
         _internalSourcesConfig = internalSourcesConfig;
@@ -22,33 +22,35 @@ public class GetFromInternalSourceChainLink : AbstractGetExchangeRatesChainLink
 
     protected override async Task<IImmutableList<ExchangeRate>> ConcreteGetExchangeRate()
     {
-        _logger.Log(LogLevel.Information, "Getting exchange rates from internal sources started");
+        Logger.Log(LogLevel.Information, "Getting exchange rates from internal sources started");
         
-        var tasks = new List<Task<IEnumerable<ExchangeRate>>>();
+        var tasks = new List<Task<ExchangeRate[]>>();
 
         foreach (var sourceUrl in _internalSourcesConfig.InternalSourcesUrls)
         {
             tasks.Add(GetExchangeRatesFromSource(sourceUrl));
         }
 
-        IEnumerable<ExchangeRate>[] results = await Task.WhenAll(tasks);
+        ExchangeRate[][] results = await Task.WhenAll(tasks);
 
-        var resultList = new List<ExchangeRate>();
-        foreach (var result in results)
+        var result = new ExchangeRate[results.Sum(row => row.Length)];
+        var offset = 0;
+        foreach (var array in results)
         {
-            resultList.AddRange(result);
+            array.CopyTo(result, offset);
+            offset += array.Length;
         }
         
-        return ImmutableList.Create(resultList.ToArray());
+        return ImmutableList.Create(result);
     }
 
-    private async Task<IEnumerable<ExchangeRate>> GetExchangeRatesFromSource(string sourceUrl)
+    private async Task<ExchangeRate[]> GetExchangeRatesFromSource(string sourceUrl)
     {
         var response = await _httpClient.GetAsync(sourceUrl);
 
         if (!response.IsSuccessStatusCode)
         {
-            _logger.Log(LogLevel.Warning, "Cannot get exchange rates from internal source under url: {Url}", sourceUrl);
+            Logger.Log(LogLevel.Warning, "Cannot get exchange rates from internal source under url: {Url}", sourceUrl);
             return Array.Empty<ExchangeRate>();
         }
 
@@ -60,7 +62,7 @@ public class GetFromInternalSourceChainLink : AbstractGetExchangeRatesChainLink
             return content;
         }
 
-        _logger.Log(LogLevel.Warning, "There is no exchange rates in internal source under url: {Url}", sourceUrl);
+        Logger.Log(LogLevel.Warning, "There is no exchange rates in internal source under url: {Url}", sourceUrl);
         return Array.Empty<ExchangeRate>();
     }
 }

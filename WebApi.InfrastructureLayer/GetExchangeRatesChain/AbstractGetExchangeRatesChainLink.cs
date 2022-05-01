@@ -1,18 +1,18 @@
 using System.Collections.Immutable;
 using ExchangeRatesSource.DomainLayer;
 using Microsoft.Extensions.Logging;
-using WebApi.ApplicationLayer;
+using WebApi.ApplicationLayer.GetExchangeRatesChain;
 
 namespace WebApi.InfrastructureLayer.GetExchangeRatesChain;
 
 public abstract class AbstractGetExchangeRatesChainLink : IGetExchangeRatesChainLink
 {
-    protected readonly ILogger<AbstractGetExchangeRatesChainLink> _logger;
+    protected readonly ILogger Logger;
     private IGetExchangeRatesChainLink? _next;
 
-    protected AbstractGetExchangeRatesChainLink(ILogger<AbstractGetExchangeRatesChainLink> logger)
+    protected AbstractGetExchangeRatesChainLink(ILogger logger)
     {
-        _logger = logger;
+        Logger = logger;
     }
 
     public async Task<IImmutableList<ExchangeRate>> GetExchangeRates()
@@ -30,7 +30,7 @@ public abstract class AbstractGetExchangeRatesChainLink : IGetExchangeRatesChain
         }
         catch (Exception ex)
         {
-            _logger.Log(LogLevel.Warning,
+            Logger.Log(LogLevel.Warning,
                 "There was error during getting exchange rates in chain of responsibility: {Error}", ex);
 
             if (_next != null)
