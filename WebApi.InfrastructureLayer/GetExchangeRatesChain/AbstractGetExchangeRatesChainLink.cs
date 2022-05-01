@@ -15,7 +15,7 @@ public abstract class AbstractGetExchangeRatesChainLink : IGetExchangeRatesChain
         Logger = logger;
     }
 
-    public async Task<ExchangeRate[]> GetExchangeRates()
+    public async Task<IImmutableList<ExchangeRate>> GetExchangeRates()
     {
         try
         {
@@ -38,7 +38,7 @@ public abstract class AbstractGetExchangeRatesChainLink : IGetExchangeRatesChain
                 return await _next.GetExchangeRates();
             }
 
-            return Array.Empty<ExchangeRate>();
+            return ImmutableList<ExchangeRate>.Empty;
         }
     }
 
@@ -47,5 +47,5 @@ public abstract class AbstractGetExchangeRatesChainLink : IGetExchangeRatesChain
         _next = nextChainLink;
     }
 
-    protected abstract Task<ExchangeRate[]> ConcreteGetExchangeRate();
+    protected abstract Task<IImmutableList<ExchangeRate>> ConcreteGetExchangeRate();
 }

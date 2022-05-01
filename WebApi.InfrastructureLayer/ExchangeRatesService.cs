@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using ExchangeRatesSource.DomainLayer;
 using WebApi.ApplicationLayer;
 using WebApi.ApplicationLayer.GetExchangeRatesChain;
