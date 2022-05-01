@@ -16,8 +16,4 @@
       <ProjectReference Include="..\ExchangeRatesSource.DomainLayer\ExchangeRatesSource.DomainLayer.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Nbp" />
-    </ItemGroup>
-
 </Project>
