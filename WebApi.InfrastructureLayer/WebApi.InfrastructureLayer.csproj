@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\ExchangeRatesSource.ApplicationLayer\ExchangeRatesSource.ApplicationLayer.csproj" />
       <ProjectReference Include="..\WebApi.ApplicationLayer\WebApi.ApplicationLayer.csproj" />
       <ProjectReference Include="..\WebApi.DomainLayer\WebApi.DomainLayer.csproj" />
     </ItemGroup>

@@ -29,16 +29,15 @@ public class GetFromInternalSourceChainLink : AbstractGetExchangeRatesChainLink
             tasks.Add(GetExchangeRatesFromSource(sourceUrl));
         }
 
-        var results = await Task.WhenAll(tasks);
+        IEnumerable<ExchangeRate>[] results = await Task.WhenAll(tasks);
 
-        var list = new List<ExchangeRate>();
-
+        var resultList = new List<ExchangeRate>();
         foreach (var result in results)
         {
-            list.AddRange(result);
+            resultList.AddRange(result);
         }
         
-        return ImmutableList.Create(list.ToArray());
+        return ImmutableList.Create(resultList.ToArray());
     }
 
     private async Task<IEnumerable<ExchangeRate>> GetExchangeRatesFromSource(string sourceUrl)
