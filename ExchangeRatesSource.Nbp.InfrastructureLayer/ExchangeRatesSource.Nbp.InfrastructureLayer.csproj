@@ -7,17 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4" />
-      <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\ExchangeRatesSource.ApplicationLayer\ExchangeRatesSource.ApplicationLayer.csproj" />
-      <ProjectReference Include="..\ExchangeRatesSource.DomainLayer\ExchangeRatesSource.DomainLayer.csproj" />
+      <ProjectReference Include="..\ExchangeRatesSource.Nbp.DomainLayer\ExchangeRatesSource.Nbp.DomainLayer.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Nbp" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
     </ItemGroup>
 
 </Project>

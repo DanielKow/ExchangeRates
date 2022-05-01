@@ -17,6 +17,7 @@
     <ItemGroup>
       <ProjectReference Include="..\ExchangeRatesSource.ApplicationLayer\ExchangeRatesSource.ApplicationLayer.csproj" />
       <ProjectReference Include="..\ExchangeRatesSource.InfrastructureLayer\ExchangeRatesSource.InfrastructureLayer.csproj" />
+      <ProjectReference Include="..\ExchangeRatesSource.Nbp.InfrastructureLayer\ExchangeRatesSource.Nbp.InfrastructureLayer.csproj" />
     </ItemGroup>
 
 </Project>

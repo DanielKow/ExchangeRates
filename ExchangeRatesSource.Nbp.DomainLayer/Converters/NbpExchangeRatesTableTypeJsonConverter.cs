@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace ExchangeRatesSource.DomainLayer.NBP;
+namespace ExchangeRatesSource.Nbp.DomainLayer.Converters;
 
 public class NbpExchangeRatesTableTypeJsonConverter : JsonConverter<NbpExchangeRatesTableType>
 {

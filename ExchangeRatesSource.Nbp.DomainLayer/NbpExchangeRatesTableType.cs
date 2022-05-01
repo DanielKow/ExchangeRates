@@ -1,4 +1,4 @@
-namespace ExchangeRatesSource.DomainLayer.NBP;
+namespace ExchangeRatesSource.Nbp.DomainLayer;
 
 public readonly struct NbpExchangeRatesTableType
 {

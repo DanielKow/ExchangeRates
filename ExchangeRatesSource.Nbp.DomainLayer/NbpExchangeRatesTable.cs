@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace ExchangeRatesSource.DomainLayer.NBP;
+namespace ExchangeRatesSource.Nbp.DomainLayer;
 
 public class NbpExchangeRatesTable
 {

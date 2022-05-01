@@ -3,10 +3,11 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using ExchangeRatesSource.ApplicationLayer;
 using ExchangeRatesSource.DomainLayer;
-using ExchangeRatesSource.DomainLayer.NBP;
+using ExchangeRatesSource.Nbp.DomainLayer;
+using ExchangeRatesSource.Nbp.DomainLayer.Converters;
 using Microsoft.Extensions.Logging;
 
-namespace ExchangeRatesSource.InfrastructureLayer.Nbp;
+namespace ExchangeRatesSource.Nbp.InfrastructureLayer;
 
 public class NbpExchangeRatesSource : IExchangeRatesSource
 {
