@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using ExchangeRatesSource.ApplicationLayer;
 using ExchangeRatesSource.DomainLayer;
 using Microsoft.Extensions.Logging;
@@ -20,7 +19,7 @@ public class GetFromExternalSourceChainLink : AbstractGetExchangeRatesChainLink
         _exchangeRatesSource = exchangeRatesSource;
     }
 
-    protected override async Task<IImmutableList<ExchangeRate>> ConcreteGetExchangeRate()
+    protected override async Task<ExchangeRate[]> ConcreteGetExchangeRate()
     {
         Logger.Log(LogLevel.Information, "Getting exchange rates from external sources started");
 
@@ -39,7 +38,7 @@ public class GetFromExternalSourceChainLink : AbstractGetExchangeRatesChainLink
             resultList.AddRange(result.ExchangeRates);
         }
         
-        return ImmutableList.Create(resultList.ToArray());
+        return resultList.ToArray();
     }
 
     private Task<GettingExchangeRatesResult> GetExchangeRatesFromExternalSource(string type)
