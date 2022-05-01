@@ -14,7 +14,7 @@ public class GetFromExternalSourceChainLink : AbstractGetExchangeRatesChainLink
     public GetFromExternalSourceChainLink(
         IExchangeRatesSource exchangeRatesSource,
         IExternalSourcesConfig externalSourcesConfig,
-        ILogger logger) : base(logger)
+        ILoggerFactory loggerFactory) : base(loggerFactory.CreateLogger<GetFromExternalSourceChainLink>())
     {
         _externalSourcesConfig = externalSourcesConfig;
         _exchangeRatesSource = exchangeRatesSource;

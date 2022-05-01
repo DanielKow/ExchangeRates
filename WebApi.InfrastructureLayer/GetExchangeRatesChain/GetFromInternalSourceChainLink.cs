@@ -14,7 +14,7 @@ public class GetFromInternalSourceChainLink : AbstractGetExchangeRatesChainLink
     public GetFromInternalSourceChainLink(
         HttpClient httpClient,
         IInternalSourcesConfig internalSourcesConfig,
-        ILogger logger) : base(logger)
+        ILoggerFactory loggerFactory) : base(loggerFactory.CreateLogger<GetFromInternalSourceChainLink>())
     {
         _httpClient = httpClient;
         _internalSourcesConfig = internalSourcesConfig;
