@@ -1,4 +1,7 @@
+using System.Collections.Immutable;
+using ExchangeRatesSource.DomainLayer;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.ApplicationLayer;
 
 namespace WebApi.PresentationLayer.Controllers;
 
@@ -6,9 +9,16 @@ namespace WebApi.PresentationLayer.Controllers;
 [Route("api/[controller]")]
 public class ExchangeRatesController : ControllerBase
 {
-    [HttpGet(Name = "GetAllExchangeRates")]
-    public IEnumerable<string> Get()
+    private readonly IExchangeRatesService _exchangeRatesService;
+
+    public ExchangeRatesController(IExchangeRatesService exchangeRatesService)
     {
-        return new[] {"test"};
+        _exchangeRatesService = exchangeRatesService;
+    }
+
+    [HttpGet(Name = "GetAllExchangeRates")]
+    public async Task<IEnumerable<ExchangeRate>> Get()
+    {
+        return await _exchangeRatesService.GetExchangeRates();
     }
 }
