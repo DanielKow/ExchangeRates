@@ -13,6 +13,8 @@ services:
     depends_on:
       - sourceA
       - sourceB
+    networks:
+      - web
   sourceA:
     image: exchange.rates.source
     build:
@@ -26,6 +28,9 @@ services:
       - dbA
       - redisA
       - migratorA
+    networks:
+      - networkA
+      - web
   sourceB:
     image: exchange.rates.source
     build:
@@ -39,22 +44,33 @@ services:
       - dbB
       - redisB
       - migratorB
+    networks:
+      - networkB
+      - web
   dbA:
     image: postgres
     restart: always
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
+    networks:
+      - networkA
   dbB:
     image: postgres
     restart: always
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
+    networks:
+      - networkB
   redisA:
     image: redis:alpine
+    networks:
+      - networkA
   redisB:
     image: redis:alpine
+    networks:
+      - networkB
   migratorA:
     image: migrator
     build:
@@ -64,6 +80,8 @@ services:
       ConnectionStrings__Db: User ID=root; Password=root; Host=dbA; Port=5432; Database=postgres;
     depends_on:
       - dbA
+    networks:
+      - networkA
   migratorB:
     image: migrator
     build:
@@ -73,3 +91,9 @@ services:
       ConnectionStrings__Db: User ID=root; Password=root; Host=dbB; Port=5432; Database=postgres;
     depends_on:
       - dbB
+    networks:
+      - networkB
+networks:
+  networkB:
+  networkA:
+  web:
