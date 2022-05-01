@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using ExchangeRatesSource.DomainLayer;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.ApplicationLayer;
@@ -6,6 +5,7 @@ using WebApi.ApplicationLayer;
 namespace WebApi.PresentationLayer.Controllers;
 
 [ApiController]
+[ApiVersion("1.0")]
 [Route("api/[controller]")]
 public class ExchangeRatesController : ControllerBase
 {

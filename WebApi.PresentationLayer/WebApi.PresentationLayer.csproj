@@ -8,11 +8,16 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\ExchangeRatesSource.InfrastructureLayer\ExchangeRatesSource.InfrastructureLayer.csproj" />
+      <ProjectReference Include="..\ExchangeRatesSource.Nbp.InfrastructureLayer\ExchangeRatesSource.Nbp.InfrastructureLayer.csproj" />
       <ProjectReference Include="..\WebApi.ApplicationLayer\WebApi.ApplicationLayer.csproj" />
+      <ProjectReference Include="..\WebApi.DomainLayer\WebApi.DomainLayer.csproj" />
+      <ProjectReference Include="..\WebApi.InfrastructureLayer\WebApi.InfrastructureLayer.csproj" />
     </ItemGroup>
 
 </Project>
