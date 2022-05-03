@@ -5,6 +5,6 @@ namespace WebApi.ApplicationLayer.GetExchangeRatesChain;
 
 public interface IGetExchangeRatesChainLink
 {
-    Task<IImmutableList<ExchangeRate>> GetExchangeRates();
+    Task<IImmutableList<ExchangeRate>> GetExchangeRatesAsync();
     void SetNext(IGetExchangeRatesChainLink nextChainLink);
 }

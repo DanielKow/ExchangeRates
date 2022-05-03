@@ -19,6 +19,6 @@ public class ExchangeRatesController : ControllerBase
     [HttpGet(Name = "GetExchangeRates")]
     public async Task<IEnumerable<ExchangeRate>> Get()
     {
-        return await _getExchangeRatesService.GetAll();
+        return await _getExchangeRatesService.GetAllAsync();
     }
 }

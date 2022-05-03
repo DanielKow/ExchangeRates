@@ -15,7 +15,7 @@ public class ExchangeRatesService : IExchangeRatesService
 
     public async Task<IEnumerable<ExchangeRate>> GetExchangeRates()
     {
-        var exchangeRates = await _chain.GetExchangeRates();
+        var exchangeRates = await _chain.GetExchangeRatesAsync();
         var orderedExchangeRates = exchangeRates.OrderBy(row => row.Currency);
         return orderedExchangeRates;
     }

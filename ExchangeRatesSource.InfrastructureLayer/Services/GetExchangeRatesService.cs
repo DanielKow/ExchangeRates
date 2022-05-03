@@ -15,7 +15,7 @@ public class GetExchangeRatesService : IGetExchangeRatesService
         _unitOfWork = unitOfWork;
     }
 
-    public Task<ImmutableList<ExchangeRate>> GetAll()
+    public Task<ImmutableList<ExchangeRate>> GetAllAsync()
     {
         return _unitOfWork.ExchangeRate.GetAllAsync().ToImmutableListAsync();
     }
