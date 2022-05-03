@@ -50,7 +50,17 @@ public class NbpExchangeRatesSource : IExchangeRatesSource
 
         var contentString = await response.Content.ReadAsStringAsync();
 
-        var tables = JsonSerializer.Deserialize<NbpExchangeRatesTable[]>(contentString, _jsonSerializerOptions);
+        NbpExchangeRatesTable[]? tables;
+        
+        try
+        {
+            tables = JsonSerializer.Deserialize<NbpExchangeRatesTable[]>(contentString, _jsonSerializerOptions);
+        }
+        catch (JsonException ex)
+        {
+            return new GettingExchangeRatesResult();
+        }
+        
         var table = tables?.FirstOrDefault();
 
         if (table == null)

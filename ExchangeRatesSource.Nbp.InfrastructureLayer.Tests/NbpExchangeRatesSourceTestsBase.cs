@@ -1,8 +1,12 @@
+using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using ExchangeRatesSource.DomainLayer;
 using Microsoft.Extensions.Logging;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 
 namespace ExchangeRatesSource.Nbp.InfrastructureLayer.Tests;
@@ -10,20 +14,22 @@ namespace ExchangeRatesSource.Nbp.InfrastructureLayer.Tests;
 [Category("base")]
 internal class NbpExchangeRatesSourceTestsBase : NbpExchangeRatesSourceTestsData
 {
-    private Mock<HttpClient> _httpClientMock = null!;
+    private Mock<HttpMessageHandler> _httpMessageHandlerMock = null!;
     private Mock<ILogger<NbpExchangeRatesSource>> _loggerMock = null!;
 
     [SetUp]
     public void SetUp()
     {
-        _httpClientMock = new Mock<HttpClient>();
+        _httpMessageHandlerMock = new Mock<HttpMessageHandler>();
         _loggerMock = new Mock<ILogger<NbpExchangeRatesSource>>();
     }
 
     protected void SetUpResponseWithExchangeRatesTableFromNbp(string content)
     {
-        _httpClientMock
-            .Setup(moq => moq.GetAsync(It.IsAny<string?>()))
+        _httpMessageHandlerMock
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
             .ReturnsAsync(new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
@@ -33,8 +39,10 @@ internal class NbpExchangeRatesSourceTestsBase : NbpExchangeRatesSourceTestsData
 
     protected void SetUpNotOkStatusOfGettingExchangeRates(HttpStatusCode code)
     {
-        _httpClientMock
-            .Setup(moq => moq.GetAsync(It.IsAny<string?>()))
+        _httpMessageHandlerMock
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
             .ReturnsAsync(new HttpResponseMessage
             {
                 StatusCode = code
@@ -58,6 +66,8 @@ internal class NbpExchangeRatesSourceTestsBase : NbpExchangeRatesSourceTestsData
 
     protected NbpExchangeRatesSource GetMockedSource()
     {
-        return new NbpExchangeRatesSource(_httpClientMock.Object, _loggerMock.Object);
+        var httpClient = new HttpClient(_httpMessageHandlerMock.Object);
+        httpClient.BaseAddress = new Uri("https://test.com");
+        return new NbpExchangeRatesSource(httpClient, _loggerMock.Object);
     }
 }

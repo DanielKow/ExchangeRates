@@ -48,12 +48,14 @@ internal class NbpExchangeRatesSourceTestsData
             }
         }.ToString();
 
-    protected GettingExchangeRatesResult TestGettingExchangeRatesResult => new GettingExchangeRatesResult(
+    protected GettingExchangeRatesResult TestGettingExchangeRatesResult => new(
         new DateOnly(2022, 5, 2),
-        new ImmutableArray<ExchangeRate>
-        {
-            new ExchangeRate("THB", 0.1293m),
-            new ExchangeRate("USD", 4.4454m),
-            new ExchangeRate("EUR", 4.6806m)
-        });
+        ImmutableList.Create(ExchangeRates));
+
+    private ExchangeRate[] ExchangeRates => new ExchangeRate[]
+    {
+        new("THB", 0.1293m),
+        new("USD", 4.4454m),
+        new("EUR", 4.6806m)
+    };
 }
