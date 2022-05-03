@@ -22,7 +22,7 @@ public class GetFromExternalSourceChainLink : AbstractGetExchangeRatesChainLink
 
     protected override async Task<IImmutableList<ExchangeRate>> ConcreteGetExchangeRate()
     {
-        Logger.Log(LogLevel.Information, "Getting exchange rates from external sources started");
+        Logger.LogInformation("Getting exchange rates from external sources started");
 
         var tasks = new List<Task<GettingExchangeRatesResult>>();
 

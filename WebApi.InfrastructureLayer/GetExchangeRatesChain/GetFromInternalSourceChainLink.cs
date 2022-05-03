@@ -27,7 +27,7 @@ public class GetFromInternalSourceChainLink : AbstractGetExchangeRatesChainLink
 
     protected override async Task<IImmutableList<ExchangeRate>> ConcreteGetExchangeRate()
     {
-        Logger.Log(LogLevel.Information, "Getting exchange rates from internal sources started");
+        Logger.LogInformation("Getting exchange rates from internal sources started");
 
         var tasks = new List<Task<ExchangeRate[]>>();
 
@@ -55,8 +55,7 @@ public class GetFromInternalSourceChainLink : AbstractGetExchangeRatesChainLink
 
         if (!response.IsSuccessStatusCode)
         {
-            Logger.Log(LogLevel.Warning,
-                "Cannot get exchange rates from internal source under url: {Url}", sourceUrl);
+            Logger.LogWarning("Cannot get exchange rates from internal source under url: {Url}", sourceUrl);
             return Array.Empty<ExchangeRate>();
         }
 
@@ -68,7 +67,7 @@ public class GetFromInternalSourceChainLink : AbstractGetExchangeRatesChainLink
             return content;
         }
 
-        Logger.Log(LogLevel.Warning, "There is no exchange rates in internal source under url: {Url}", sourceUrl);
+        Logger.LogWarning("There is no exchange rates in internal source under url: {Url}", sourceUrl);
 
         return Array.Empty<ExchangeRate>();
     }

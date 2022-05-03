@@ -28,7 +28,7 @@ public class UpdateExchangeRatesService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _logger.Log(LogLevel.Debug, "Updating exchange rates with type {Type} started", _type);
+        _logger.LogInformation("Updating exchange rates with type {Type} started", _type);
 
         using var scope = _services.CreateScope();
         IUpdateExchangeRatesScopedService scopedService =

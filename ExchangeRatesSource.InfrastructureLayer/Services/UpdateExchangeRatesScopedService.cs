@@ -46,11 +46,11 @@ public class UpdateExchangeRatesScopedService : IUpdateExchangeRatesScopedServic
         }
         catch (Exception ex)
         {
-            _logger.Log(LogLevel.Warning, "There was error during updating cache: {Error}", ex);
+            _logger.LogWarning("There was error during updating cache: {Error}", ex);
             delay = FiveMinutesDelay;
         }
 
-        _logger.Log(LogLevel.Debug, "Next update of exchange rates will be performed in {Delay} ms", delay);
+        _logger.LogInformation("Next update of exchange rates will be performed in {Delay} ms", delay);
         await Task.Delay(delay, stoppingToken);
     }
     
@@ -68,7 +68,7 @@ public class UpdateExchangeRatesScopedService : IUpdateExchangeRatesScopedServic
             return await TryUpdateIfNewer(lastUpdateDate.Value);
         }
         
-        _logger.Log(LogLevel.Debug, "Exchange rates already actual for type {Type}", _type);
+        _logger.LogInformation("Exchange rates already actual for type {Type}", _type);
         return true;
 
     }
@@ -79,7 +79,7 @@ public class UpdateExchangeRatesScopedService : IUpdateExchangeRatesScopedServic
 
         if (result.Successfully == false)
         {
-            _logger.Log(LogLevel.Warning, "Cannot get exchange rates from NBP for type {Type}", _type);
+            _logger.LogWarning("Cannot get exchange rates from NBP for type {Type}", _type);
             return false;
         }
 
@@ -94,19 +94,19 @@ public class UpdateExchangeRatesScopedService : IUpdateExchangeRatesScopedServic
 
         if (result.Successfully == false)
         {
-            _logger.Log(LogLevel.Warning, "Cannot get exchange rates from NBP for type {Type}", _type);
+            _logger.LogWarning("Cannot get exchange rates from NBP for type {Type}", _type);
             return false;
         }
 
         if (result.LastUpdateDate <= lastUpdateDate)
         {
-            _logger.Log(LogLevel.Warning, "There is no new exchange rates from NBP for type {Type}", _type);
+            _logger.LogWarning("There is no new exchange rates from NBP for type {Type}", _type);
             return false;
         }
 
         await Update(result);
 
-        _logger.Log(LogLevel.Debug, "Exchange rates updated in internal store for type {Type}", _type);
+        _logger.LogInformation("Exchange rates updated in internal store for type {Type}", _type);
         return true;
     }
 
@@ -116,6 +116,6 @@ public class UpdateExchangeRatesScopedService : IUpdateExchangeRatesScopedServic
         await _unitOfWork.SaveAsync();
 
         await _cache.SaveAsync(result.LastUpdateDate);
-        _logger.Log(LogLevel.Debug, "Exchange rates updated for type {Type}", _type);
+        _logger.LogInformation("Exchange rates updated for type {Type}", _type);
     }
 }

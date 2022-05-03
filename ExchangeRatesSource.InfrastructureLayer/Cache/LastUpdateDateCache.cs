@@ -33,7 +33,7 @@ public class LastUpdateDateCache : ILastUpdateDateCache
             return date;
         }
         
-        _logger.Log(LogLevel.Warning, "Cannot get last update date from cache");
+        _logger.LogWarning("Cannot get last update date from cache");
         return null;
     }
 }

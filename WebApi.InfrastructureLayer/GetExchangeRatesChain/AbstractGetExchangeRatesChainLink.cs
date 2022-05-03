@@ -30,8 +30,7 @@ public abstract class AbstractGetExchangeRatesChainLink : IGetExchangeRatesChain
         }
         catch (Exception ex)
         {
-            Logger.Log(LogLevel.Warning,
-                "There was error during getting exchange rates in chain of responsibility: {Error}", ex);
+            Logger.LogWarning("There was error during getting exchange rates in chain of responsibility: {Error}", ex);
 
             if (_next != null)
             {

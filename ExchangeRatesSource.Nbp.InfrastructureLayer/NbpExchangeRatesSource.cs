@@ -35,7 +35,7 @@ public class NbpExchangeRatesSource : IExchangeRatesSource
     {
         if (type != NbpExchangeRatesTableType.A.Value && type != NbpExchangeRatesTableType.B.Value)
         {
-            _logger.Log(LogLevel.Warning, "Type {Type} is not recognized by NBP", type);
+            _logger.LogInformation("Type {Type} is not recognized by NBP", type);
 
             return new GettingExchangeRatesResult();
         }
