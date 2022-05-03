@@ -55,6 +55,8 @@ services:
       POSTGRES_PASSWORD: root
     networks:
       - networkA
+    volumes:
+      - postgres-data-b:/var/lib/posgresql/data
   dbB:
     image: postgres
     restart: always
@@ -63,14 +65,22 @@ services:
       POSTGRES_PASSWORD: root
     networks:
       - networkB
+    volumes:
+      - postgres-data-a:/var/lib/posgresql/data
   redisA:
     image: redis:alpine
+    restart: always
     networks:
       - networkA
+    volumes:
+      - redis-data-a:/data
   redisB:
     image: redis:alpine
+    restart: always
     networks:
       - networkB
+    volumes:
+      - redis-data-b:/data
   migratorA:
     image: migrator
     build:
@@ -97,3 +107,8 @@ networks:
   networkB:
   networkA:
   web:
+volumes:
+  postgres-data-a:
+  postgres-data-b:
+  redis-data-a:
+  redis-data-b:
